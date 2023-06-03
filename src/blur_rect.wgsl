@@ -64,7 +64,7 @@ fn fs_main(
     let coord_x = x + (width  * in.tex_coords.x);
     let coord_y = y + (height * in.tex_coords.y);
 
-    let sigma = 2.0;
+    let sigma = 9.0;
     let k = 2.0 * sigma * sigma;
 
     let size = i32(floor(sigma * 3.0));

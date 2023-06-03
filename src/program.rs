@@ -20,12 +20,15 @@ pub struct Program {
     egui_ctx: egui::Context,
     egui_winit_bridge: egui_winit::State,
     egui_wgpu_renderer: egui_wgpu::Renderer,
+
+    ferris_img: egui::TextureHandle,
 }
 
 impl Program {
     pub async fn new() -> Self {
         let event_loop = EventLoop::new();
         let window = winit::window::WindowBuilder::new()
+            .with_inner_size(winit::dpi::LogicalSize::new(455., 330.))
             .with_title("Blur Rect Demo")
             .build(&event_loop)
             .unwrap();
@@ -41,6 +44,21 @@ impl Program {
         let mut egui_winit_bridge = egui_winit::State::new(&window);
         egui_winit_bridge.set_pixels_per_point(window.scale_factor() as f32);
 
+        let image = image::load_from_memory(include_bytes!("cuddlyferris.png").as_slice()).unwrap();
+        let size = [image.width() as _, image.height() as _];
+        let image_buffer = image.to_rgba8();
+        let pixels = image_buffer.as_flat_samples();
+        // Ok(egui::ColorImage::from_rgba_unmultiplied(
+        //     size,
+        //     pixels.as_slice(),
+        // ))
+
+        let ferris_img = egui_ctx.load_texture(
+            "cuddlyferris",
+            egui::ColorImage::from_rgba_unmultiplied(size, pixels.as_slice()),
+            egui::TextureOptions::LINEAR,
+        );
+
         let mut res = Self {
             window,
             event_loop: Some(event_loop),
@@ -51,6 +69,8 @@ impl Program {
             egui_ctx,
             egui_wgpu_renderer,
             egui_winit_bridge,
+
+            ferris_img,
         };
 
         res.generate_window_texture();
@@ -150,7 +170,7 @@ impl Program {
 
         let full_output = self.egui_ctx.run(raw_input, |ctx| {
             // let project = project.write();
-            crate::ui::ui_main(ctx)
+            crate::ui::ui_main(ctx, &self.ferris_img)
         });
 
         let paint_jobs = self.egui_ctx.tessellate(full_output.shapes);

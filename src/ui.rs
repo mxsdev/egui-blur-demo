@@ -7,17 +7,12 @@ use wgpu::RenderPassDescriptor;
 
 use crate::{pipeline::WindowPipelineRegistry, util::NewRenderPass, window_texture::WindowTexture};
 
-pub fn ui_main<'a>(ctx: &egui::Context) {
-    egui::CentralPanel::default().show(&ctx, |_ui| {});
-
-    let window_id = Id::new("test-window");
-
-    egui::Window::new("Node Editor")
-        .id(window_id)
-        .resizable(true)
-        .default_size([1500., 850.])
-        .default_pos([50., 50.])
-        .show(ctx, |_| {});
+pub fn ui_main<'a>(ctx: &egui::Context, image: &egui::TextureHandle) {
+    egui::CentralPanel::default().show(&ctx, |ui| {
+        // ui.allocate_space(vec2(100., 0.));
+        // ui.button("Test Button")
+        ui.image(image, image.size_vec2());
+    });
 
     let layer = LayerId::new(Order::Middle, Id::from("test_window_bg"));
     let painter = ctx.layer_painter(layer);
@@ -31,7 +26,7 @@ pub fn ui_main<'a>(ctx: &egui::Context) {
                 .shadow(Shadow::NONE),
         )
         .resizable(true)
-        .default_size(vec2(200., 200.))
+        .default_size(vec2(200., 260.))
         .show(ctx, |ui| {
             ui.allocate_space(ui.available_size());
         })
