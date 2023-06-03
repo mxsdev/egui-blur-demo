@@ -15,20 +15,18 @@ pub struct Program {
     event_loop: Option<EventLoop<()>>,
 
     render_ctx: RenderContext,
-
     surface: SurfaceRenderer,
-    // window_texture: WindowTexture,
+
     egui_ctx: egui::Context,
     egui_winit_bridge: egui_winit::State,
-
     egui_wgpu_renderer: egui_wgpu::Renderer,
-    // repaint_needed: Arc<egui::mutex::RwLock<bool>>,
 }
 
 impl Program {
     pub async fn new() -> Self {
         let event_loop = EventLoop::new();
         let window = winit::window::WindowBuilder::new()
+            .with_title("Blur Rect Demo")
             .build(&event_loop)
             .unwrap();
 
@@ -50,7 +48,6 @@ impl Program {
             render_ctx,
             surface,
 
-            // window_texture,
             egui_ctx,
             egui_wgpu_renderer,
             egui_winit_bridge,
@@ -64,11 +61,8 @@ impl Program {
     pub fn run(mut self) {
         let event_loop = self.event_loop.take().unwrap();
 
-        // println!("{:?}", event_loop);
-
         event_loop.run(move |event, _, control_flow| match event {
             Event::WindowEvent { event, .. } => {
-                println!("???");
                 self.handle_window_event(&event, control_flow);
             }
 

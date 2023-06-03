@@ -23,41 +23,38 @@ pub fn ui_main<'a>(ctx: &egui::Context) {
     let painter = ctx.layer_painter(layer);
     let shape_idx = painter.add(Shape::Noop);
 
-    let window2 = egui::Window::new("Test")
+    let blur_window = egui::Window::new("Test")
         .id(layer.id)
         .frame(
             Frame::window(&ctx.style())
                 .fill(Color32::TRANSPARENT)
                 .shadow(Shadow::NONE),
         )
+        .resizable(true)
+        .default_size(vec2(200., 200.))
         .show(ctx, |ui| {
-            ui.allocate_space(vec2(200.0, 200.0));
+            ui.allocate_space(ui.available_size());
         })
         .unwrap()
         .response;
 
     {
-        let rect = window2.rect;
+        let rect = blur_window.rect;
 
         if rect.size().length() > 0.0 {
             painter.set(
                 shape_idx,
-                // RectShape::filled(window2.rect, ctx.style().visuals.window_rounding, Color32::BLUE)
                 Shape::Callback(PaintCallback {
                     rect,
                     callback: Arc::new(
                         egui_wgpu::CallbackFn::new()
                             .prepare(move |_device, queue, _encoder, resources| {
                                 let wt = resources.get::<WindowTexture>().unwrap();
-                                wt.pipeline_registry().set_rect(window2.rect, queue);
+                                wt.pipeline_registry().set_rect(blur_window.rect, queue);
 
                                 vec![]
                             })
                             .paint(move |_info, render_pass, resources| {
-                                // let mut encoder = resources.get::<Arc<RwLock<wgpu::CommandEncoder>>>()
-                                //     .unwrap().write().unwrap();
-                                // let mut encoder = resources.get::<SharedCommandEncoder>().unwrap().get_mut().unwrap();
-
                                 let wt = resources.get::<WindowTexture>().unwrap();
 
                                 let size = wt.physical_size();
