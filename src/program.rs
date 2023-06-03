@@ -48,10 +48,6 @@ impl Program {
         let size = [image.width() as _, image.height() as _];
         let image_buffer = image.to_rgba8();
         let pixels = image_buffer.as_flat_samples();
-        // Ok(egui::ColorImage::from_rgba_unmultiplied(
-        //     size,
-        //     pixels.as_slice(),
-        // ))
 
         let ferris_img = egui_ctx.load_texture(
             "cuddlyferris",
@@ -168,10 +164,9 @@ impl Program {
     pub fn draw(&mut self) -> Result<(), SurfaceError> {
         let raw_input = self.egui_winit_bridge.take_egui_input(&self.window);
 
-        let full_output = self.egui_ctx.run(raw_input, |ctx| {
-            // let project = project.write();
-            crate::ui::ui_main(ctx, &self.ferris_img)
-        });
+        let full_output = self
+            .egui_ctx
+            .run(raw_input, |ctx| crate::ui::ui_main(ctx, &self.ferris_img));
 
         let paint_jobs = self.egui_ctx.tessellate(full_output.shapes);
         let screen_descriptor = self.surface.screen_descriptor();

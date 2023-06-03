@@ -61,7 +61,6 @@ impl PipelineRegistry {
 
         let copy_bind_group_layout =
             device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
-                // label: Some("window_texture_bind_group_layout"),
                 label: None,
                 entries: &[
                     wgpu::BindGroupLayoutEntry {
@@ -97,20 +96,17 @@ impl PipelineRegistry {
                     resource: wgpu::BindingResource::Sampler(&sampler),
                 },
             ],
-            // label: Some("diffuse_bind_group"),
             label: None,
         });
 
         let copy_render_pipeline_layout =
             device.create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
-                // label: Some("Render Pipeline Layout"),
                 label: None,
                 bind_group_layouts: &[&copy_bind_group_layout], // NEW!
                 push_constant_ranges: &[],
             });
 
         let copy_pipeline = device.create_render_pipeline(&wgpu::RenderPipelineDescriptor {
-            // label: Some("Render Pipeline"),
             label: None,
             layout: Some(&copy_render_pipeline_layout),
             vertex: wgpu::VertexState {

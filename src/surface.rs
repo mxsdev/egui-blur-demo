@@ -91,11 +91,6 @@ impl SurfaceRenderer {
         return self.size().to_logical(self.scale_fac);
     }
 
-    // pub fn projection_matrix(&self) -> glam::DMat4 {
-    //     let winit::dpi::LogicalSize { width, height } = self.logical_size();
-    //     glam::DMat4::orthographic_lh(0., width, height, 0., -1., 1.)
-    // }
-
     pub fn get_scale_fac(&self) -> f64 {
         self.scale_fac
     }

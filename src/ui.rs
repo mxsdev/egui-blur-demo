@@ -9,8 +9,6 @@ use crate::{pipeline::WindowPipelineRegistry, util::NewRenderPass, window_textur
 
 pub fn ui_main<'a>(ctx: &egui::Context, image: &egui::TextureHandle) {
     egui::CentralPanel::default().show(&ctx, |ui| {
-        // ui.allocate_space(vec2(100., 0.));
-        // ui.button("Test Button")
         ui.image(image, image.size_vec2());
     });
 
