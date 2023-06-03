@@ -1,0 +1,18 @@
+[package]
+name = "egui-blur-demo"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+bytemuck = "1.13.1"
+egui = "0.22.0"
+egui-wgpu = "0.22.0"
+egui-winit = "0.22.0"
+glam = "0.24.0"
+pollster = "0.3.0"
+raw-window-handle = "0.5.2"
+wgpu = "0.16.1"
+wgpu-core = "0.16.1"
+winit = "0.28.6"
